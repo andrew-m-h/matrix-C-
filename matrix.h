@@ -120,8 +120,7 @@ vector, 0's are added to fill in the difference.
 template <class Type>
 matrix<Type>::matrix(int in_width, int in_height, std::vector<Type>* input)
 {
-    /*static_assert(std::_Is_numeric<Type>::value,
-    	"Cannot initialise matrix with non numeric types");*/
+
     width = in_width;
     height = in_height;
     size = (width > height) ? width : height;
@@ -154,8 +153,7 @@ this can be fixed by the c++ equivalent of the haskell: fmap (const 0) matrix
 template <class Type>
 matrix<Type>::matrix(int in_width, int in_height)
 {
-    /*static_assert(std::_Is_numeric<Type>::value,
-    	"Cannot initialise matrix with non numeric types");*/
+
     width = in_width;
     height = in_height;
     size = (width > height) ? width : height;
@@ -175,8 +173,7 @@ Copy one matrix into another
 template <class Type>
 matrix<Type>::matrix(const matrix<Type> &in_matrix)
 {
-    /*static_assert(std::_Is_numeric<Type>::value,
-    	"Cannot initialise matrix with non numeric types");*/
+
     if (in_matrix.data)
     {
         width = in_matrix.width;
@@ -767,8 +764,6 @@ matrix<Type>::operator matrix<double>()
 template <class Type>
 vector<Type>::vector(int in_height)
 {
-    /*static_assert(std::_Is_numeric<Type>::value,
-    	"Cannot initialise matrix with non numeric types");*/
     matrix<Type>::width = 1;
     matrix<Type>::height = in_height;
     matrix<Type>::size = matrix<Type>::height;
@@ -788,8 +783,6 @@ vector<Type>::vector(int in_height)
 template <class Type>
 vector<Type>::vector(int in_height, Type* in_data)
 {
-    /*static_assert(std::_Is_numeric<Type>::value,
-    	"Cannot initialise matrix with non numeric types");*/
     matrix<Type>::width = 1;
     matrix<Type>::height = in_height;
     matrix<Type>::size = matrix<Type>::height;
