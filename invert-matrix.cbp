@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="invert-matrix-cmdline-unix" />
+		<Option title="invert-matrix" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
