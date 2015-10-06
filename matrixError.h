@@ -1,3 +1,7 @@
+/*
+Written by Andrew M. Hal
+*/
+
 #include <string>
 
 namespace Matrix{

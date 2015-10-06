@@ -1,3 +1,7 @@
+/*
+Written by Andrew M. Hall
+*/
+
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -44,71 +48,68 @@ int main(int argc, char *argv[])
     if ( arguments.find(Input) == arguments.end() || arguments.find(Dimension) == arguments.end() ){
         std::cout << "Must have -i and -d arguments\n" << helpMessage << std::endl;
         return 0;
-    } else {
-        //Hold the dimension of the matrix in question
-        int dim;
-        //casting command line argument to integer requires much checking
-        try{
-            dim = std::stoi(arguments[Dimension]);
-            if (dim <= 1){
-                std::cout << "The dimension must be greater than 1" << std::endl;
+    }
+    //Hold the dimension of the matrix in question
+    int dim;
+    //casting command line argument to integer requires much checking
+    try{
+        dim = std::stoi(arguments[Dimension]);
+        if (dim <= 1){
+            std::cout << "The dimension must be greater than 1" << std::endl;
+            return 0;
+        }
+    } catch (std::invalid_argument e){
+        std::cout << arguments[Dimension] << " is not a valid dimension, dimension must be an integer" << std::endl;
+        return 0;
+    }
+
+    //Open input file
+    std::ifstream matrix_file(arguments[Input]);
+    if( !matrix_file.is_open() ){
+        std::cout << "could not open file: " << arguments[Input] << std::endl;
+        return 0;
+    }
+    //Read file contents into data vector
+    std::vector<double> data;
+    std::copy(
+        std::istream_iterator<double>(matrix_file),
+        std::istream_iterator<double>(),
+        std::back_inserter(data)
+    );
+    matrix_file.close();
+
+    try {
+        Matrix::matrix<double> A(dim, dim, &data);
+        //If the output is to go to an output file
+        if (arguments.find(Output) == arguments.end()){
+            //Set precision
+            if (arguments.find(Precision) == arguments.end()){
+                std::cout.precision(defaultPrecision);
+            } else if (!setPrec(std::cout, arguments[Precision])){
                 return 0;
             }
-        } catch (std::invalid_argument e){
-            std::cout << arguments[Dimension] << " is not a valid dimension, dimension must be an integer" << std::endl;
-            return 0;
-        }
-
-        //Open input file
-        std::ifstream matrix_file(arguments[Input]);
-        if( !matrix_file.is_open() ){
-            std::cout << "could not open file: " << arguments[Input] << std::endl;
-            return 0;
-        }
-        //Read file contents into data vector
-        std::vector<double> data;
-        std::copy(
-            std::istream_iterator<double>(matrix_file),
-            std::istream_iterator<double>(),
-            std::back_inserter(data)
-        );
-        matrix_file.close();
-
-        try {
-            Matrix::matrix<double> A(dim, dim, &data);
-            //If the output is to go to an output file
-            if (arguments.find(Output) == arguments.end()){
-                //Set precision
-                if (arguments.find(Precision) == arguments.end()){
-                    std::cout.precision(defaultPrecision);
-                } else {
-                    if (!setPrec(std::cout, arguments[Precision]))
-                        return 0;
-                }
-                //INVERT!
-                std::cout << Matrix::invert(A);
-            } else {
-                //Open/Create output file
-                std::ofstream output(arguments[Output]);
-                if (!output.is_open()){
-                    std::cout << "Could not open file: " << arguments[Output] << std::endl;
-                    return 0;
-                }
-                //Set precision
-                if (arguments.find(Precision) == arguments.end()){
-                    output.precision(defaultPrecision);
-                } else {
-                    if (!setPrec(output, arguments[Precision]))
-                        return 0;
-                }
-                //INVERT!
-                output << Matrix::invert(A);
-                output.close();
+            //INVERT!
+            std::cout << Matrix::invert(A);
+        } else {
+            //Open/Create output file
+            std::ofstream output(arguments[Output]);
+            if (!output.is_open()){
+                std::cout << "Could not open file: " << arguments[Output] << std::endl;
+                return 0;
             }
-        } catch (Matrix::matrixException e){
-            std::cerr << e.getErrorMessage() << std::endl;
-            return 0;
+            //Set precision
+            if (arguments.find(Precision) == arguments.end()){
+                output.precision(defaultPrecision);
+            } else if (!setPrec(output, arguments[Precision])){
+                return 0;
+            }
+            //INVERT!
+            output << Matrix::invert(A);
+            output.close();
         }
+    } catch (Matrix::matrixException e){
+        std::cerr << e.getErrorMessage() << std::endl;
+        return 0;
     }
     return 0;
 }
