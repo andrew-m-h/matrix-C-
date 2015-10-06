@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     //Place all command line arguments into argument map using Argument Enum as key
     std::map<Argument, std::string> arguments;
     for (int i = 1; i < argc; i+=2){
-        if (i+1 == argc){
+        if (i+1 == argc && argv[i][1] != 'h'){
             std::cout << "Incorrect command line arguments, mismatch on " << argv[i] << std::endl;
             return 0;
         }
