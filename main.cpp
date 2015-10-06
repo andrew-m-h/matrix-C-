@@ -25,6 +25,10 @@ int main(int argc, char *argv[])
     //Place all command line arguments into argument map using Argument Enum as key
     std::map<Argument, std::string> arguments;
     for (int i = 1; i < argc; i+=2){
+        if (i+1 == argc){
+            std::cout << "Incorrect command line arguments, mismatch on " << argv[i] << std::endl;
+            return 0;
+        }
         switch(argv[i][1]){
             case 'd' : arguments[Dimension] = argv[i+1];break;
             case 'i' : arguments[Input] = argv[i+1];break;
