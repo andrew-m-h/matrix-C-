@@ -642,13 +642,18 @@ bool operator==(const matrix<Type> &a, const matrix<Type> &b)
 template <class Type>
 std::ostream& operator<<(std::ostream &out, const matrix<Type> &a)
 {
+    char space[5] = "    ";
+    if (out.precision() <= 4){
+        space[0] = '\t';
+        space[1] = '\0';
+    }
     int height = a.height;
     int width = a.width;
     for (int y = 0; y < height; y++)
     {
         for (int x = 0; x < width; x++)
         {
-            out << a[y][x] << '\t';
+            out << a[y][x] << space;
         }
         out << std::endl;
     }

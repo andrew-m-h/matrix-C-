@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
 /*
 Set the precision of an output stream based on the command line argument
 This saves having to do all the checking twice
-return true is all is successful, return false if operaion fails
+return true if all is successful, return false if operaion fails
 */
 bool setPrec(std::ostream &out, const std::string &str){
     try {
