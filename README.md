@@ -18,13 +18,6 @@ The input file represents a stream of numbers, which will be read, left to right
 e.g. space seperated
 1 8 -9 7 5 0 1 0 4 4 0 0 1 2 5 0 0 0	1 -5 0 0 0 0 1
 
-e.g. space seperated with new line characters
-1 8 -9 7 5
-0 1 0 4 4
-0 0 1 2 5
-0 0 0 1 -5
-0 0 0 0 1
-
 ### Limitations
 The tool uses the method of cofactor expansion to invert a matrix, this gives exponential time and limits the size of the input matrix to realistically less than 10x10. Internally, the numbers are represenetd as double precision, this leads to the all too common limitations when working with high precisions.
 
