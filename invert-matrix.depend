@@ -1,0 +1,23 @@
+# depslib dependency file v1.0
+1444131251 source:/home/andrew/Documents/github/invert-matrix/main.cpp
+	<iostream>
+	<fstream>
+	<vector>
+	<iterator>
+	<algorithm>
+	<sstream>
+	<map>
+	<string>
+	<stdlib.h>
+	<stdlib.h>
+	"matrix.h"
+
+1444102867 /home/andrew/Documents/github/invert-matrix/matrix.h
+	<string>
+	<vector>
+	<iostream>
+	"matrixError.h"
+
+1444057175 /home/andrew/Documents/github/invert-matrix/matrixError.h
+	<string>
+
