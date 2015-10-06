@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
         //Open input file
         std::ifstream matrix_file(arguments[Input]);
         if( !matrix_file.is_open() ){
-            std::cout << "could not open file: " << argv[Input] << std::endl;
+            std::cout << "could not open file: " << arguments[Input] << std::endl;
             return 0;
         }
         //Read file contents into data vector
@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
                 //Open/Create output file
                 std::ofstream output(arguments[Output]);
                 if (!output.is_open()){
-                    std::cout << "Could not open file: " << argv[Output] << std::endl;
+                    std::cout << "Could not open file: " << arguments[Output] << std::endl;
                     return 0;
                 }
                 //Set precision
