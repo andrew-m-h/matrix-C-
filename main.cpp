@@ -13,10 +13,10 @@ Written by Andrew M. Hall
 #include <cstring>
 #include "matrix.h"
 
-const char* helpMessage = "usage:\n\tinvert-matrix -d | --dimension Dimension -i | --input Input [-o | --output Output] [-p | --precision Precision] [-h Help]\n\tDimension: The dimension of the matrix, greater than 1\n\tInput: Input file name of file containing input matrix\n\tPrecision: Desired precision of output matrix\n\tHelp: This help message";
 const int defaultPrecision = 3;
 const int numArgs = 5;
 
+//Codes used to identify command line options, also used as keys for ArgMap
 enum ArgCode{
     DIMENSION = 0,
     INPUT,
@@ -25,40 +25,44 @@ enum ArgCode{
     HELP
 };
 
+//Hold data about arguments, used to dynamically create help message and parse arguments from command line
 struct Argument{
     const char* longCode;
     const char* shortCode;
+    const char* description;
     ArgCode code;
     bool mandatory;
-    Argument(const char* l, const char* s, ArgCode c, bool m):longCode(l), shortCode(s), code(c), mandatory(m){};
-
+    Argument(const char* l, const char* s, const char* d, ArgCode c, bool m):
+        longCode(l), shortCode(s), description(d), code(c), mandatory(m){};
 }   arguments[numArgs] {
-Argument("--dimension", "-d", DIMENSION, true),
-Argument("--input", "-i", INPUT, true),
-Argument("--output", "-o", OUTPUT, false),
-Argument("--precision", "-p", PRECISION, false),
-Argument("--help", "-h", HELP, false)
+Argument("--dimension", "-d", "The dimension, n, of the input nxn matrix", DIMENSION, true),
+Argument("--input", "-i", "The name of the input file that contains the matrix to be inverted",INPUT, true),
+Argument("--output", "-o", "The name of a file, which the inverted matrix will be written to", OUTPUT, false),
+Argument("--precision", "-p", "The precision (number of decimal places) which the inverted matrix will be displayed (default 3)", PRECISION, false),
+Argument("--help", "-h", "Display help message", HELP, false)
 };
 
+//Map used to hold ArgCodes/Value pairs
 typedef std::map<ArgCode, std::string> argMap;
 
+//Helper functions
 bool setPrec(std::ostream &out, const std::string &str);
-bool argGiven(const argMap &m, ArgCode a);
-
-
+inline bool argGiven(const argMap &m, ArgCode a);
+std::string getHelpMessage(const char* name);
 
 int main(int argc, char *argv[])
 {
     //Place all command line arguments into argument map using Argument as key
     argMap inputArguments;
-
+    std::string helpMessage = getHelpMessage(argv[0]);
+    //Iterate through command line arguments
     for (int i = 1; i < argc; i+=2){
+        //Deal with --help flag being the
         if (i+1 == argc && strcmp(argv[i], arguments[HELP].shortCode) && strcmp(argv[i], arguments[HELP].longCode)){
             std::cout << "Incorrect command line arguments, mismatch on " << argv[i] << std::endl;
             return 0;
         }
         for (int a = 0; a < numArgs; a++){
-
             if (!strcmp(argv[i], arguments[a].longCode) || !strcmp(argv[i], arguments[a].shortCode)){
                 if (arguments[a].code == HELP){
                     std::cout << helpMessage << std::endl;
@@ -161,8 +165,8 @@ return true if all is successful, return false if operaion fails
 bool setPrec(std::ostream &out, const std::string &str){
     try {
         int p = std::stoi(str);
-        if (p < 0 || p > 12) {
-            std::cout << str << " is not a valid precision\n precision must be greater than or equal to 0 and less than or equal to 12" << std::endl;
+        if (p < 0 || p > 20) {
+            std::cout << str << " is not a valid precision\n precision must be greater than or equal to 0 and less than or equal to 20" << std::endl;
             return false;
         }
         out.precision(p);
@@ -171,4 +175,36 @@ bool setPrec(std::ostream &out, const std::string &str){
         return false;
     }
     return true;
+}
+/*
+Create dynamic help message based on possible arguments
+This is better than a static message, because it makes the help message much easier to keep  up to date
+*/
+std::string getHelpMessage(const char* name){
+    std::string output = "usage: $ ";
+    output.append(name);
+    for (int i = 0; i < numArgs; i++){
+        if (!arguments[i].mandatory){
+            output.append("   [");
+            output.append(arguments[i].shortCode);
+            output.append(" | ");
+            output.append(arguments[i].longCode);
+            output.append("]");
+        } else {
+            output.append("   ");
+            output.append(arguments[i].shortCode);
+            output.append(" | ");
+            output.append(arguments[i].longCode);
+        }
+    }
+    output.append("\n\t");
+    for (int i = 0; i < numArgs; i++){
+        output.append(arguments[i].shortCode);
+        output.append(", ");
+        output.append(arguments[i].longCode);
+        output.append(": ");
+        output.append(arguments[i].description);
+        output.append("\n\t");
+    }
+    return output;
 }
