@@ -105,6 +105,8 @@ class vector : public matrix < Type >
 public:
     vector() : matrix<Type>::data(nullptr), matrix<Type>::height(0), matrix<Type>::width(0){};
     vector(int in_height, Type* in_data);
+    vector(int in_height, std::vector<Type>* in_data);
+
     vector(int in_height);
     Type operator[](int a)const;
     friend Type operator* <>(const vector<Type> &a, const vector<Type> &b);
@@ -781,7 +783,7 @@ vector<Type>::vector(int in_height)
 
 //Constructors
 template <class Type>
-vector<Type>::vector(int in_height, Type* in_data)
+vector<Type>::vector(int in_height, std::vector<Type>* in_data)
 {
     matrix<Type>::width = 1;
     matrix<Type>::height = in_height;
@@ -796,7 +798,7 @@ vector<Type>::vector(int in_height, Type* in_data)
     }
     for (int i = 0; i < matrix<Type>::height; i++)
     {
-        matrix<Type>::data[i*matrix<Type>::size] = in_data[i];
+        matrix<Type>::data[i*matrix<Type>::size] = in_data->at(i);
     }
 }
 

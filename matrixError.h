@@ -5,7 +5,6 @@ Written by Andrew M. Hal
 #include <string>
 
 namespace Matrix{
-	using namespace std;
 	enum possible_errors {
 		SUCCESS = 0,
 		MATH_ERROR,
@@ -17,11 +16,11 @@ namespace Matrix{
 
 	class matrixException {
 	private:
-		string errorMessage;
+		std::string errorMessage;
 		possible_errors errorCode;
 		matrixException() {}
 	public:
-		matrixException(string errormsg)
+		matrixException(std::string errormsg)
 			:errorMessage(errormsg), errorCode(OTHER){}
 		matrixException(possible_errors code)
 			:errorCode(code){
@@ -33,7 +32,7 @@ namespace Matrix{
 				errorMessage = "Matrix Math error, possible cause:\nInverse, cofactor, adjoint or determinant does not exist";
 				break;
 			case DIMENSION_ERROR:
-				errorMessage = "Matrix Dimension Error, possible cause:\n\tTake Inverse, cofactor, adjoint of non square matrix\n\tdot product of vectors of different sizes";
+				errorMessage = "Matrix Dimension Error, possible cause:\n\tTake Inverse, cofactor, adjoint of non square matrix\n\tTake dot product of vectors of different sizes";
 				break;
 			case MEMORY_ERROR:
 				errorMessage = "Matrix error occured when allocating dynamic memory";
@@ -45,7 +44,7 @@ namespace Matrix{
 				errorMessage = "An error occured during matrix operation";
 			}
 		}
-		string getErrorMessage(){
+		std::string getErrorMessage(){
 			return errorMessage;
 		}
 		possible_errors getErrorCode(){
