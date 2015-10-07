@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
     //The mandadtory arguments are Dimension and Input, if they are not present, then warn the user to user and exit.
     for (int i = 0; i < numArgs; i++){
         if (arguments[i].mandatory && !argGiven(inputArguments, arguments[i].code)){
-            std::cout << "Musg have at least:";
+            std::cout << "Must have at least:";
             for (int a = 0; a < numArgs; a++){
                 if (arguments[a].mandatory){
                     std::cout << "\n\t" << arguments[a].shortCode << " or " << arguments[a].longCode;
